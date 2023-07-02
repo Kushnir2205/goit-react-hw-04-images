@@ -13,7 +13,6 @@ import Loader from './Loader/Loader';
 const App = () => {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
-  // const [totalPages, setTotalPages] = useState(1);
   const [images, setImages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [largeImageUrl, setLargeImageUrl] = useState('');
