@@ -20,26 +20,28 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (!query) {
+      return;
+    }
+    const fetchImages = async (page, query) => {
+      try {
+        setIsLoading(true);
+        const { hits, totalHits } = await getImages(query, page);
+
+        if (hits.length === 0) {
+          toast.error('No results found. Please try again.');
+        } else {
+          setImages(prevImages => [...prevImages, ...hits]);
+          setShowBtn(page < Math.ceil(totalHits / 12));
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     fetchImages(page, query);
   }, [page, query]);
-
-  const fetchImages = async (page, query) => {
-    try {
-      setIsLoading(true);
-      const { hits, totalHits } = await getImages(query, page);
-
-      if (hits.length === 0) {
-        toast.error('No results found. Please try again.');
-      } else {
-        setImages(prevImages => [...prevImages, ...hits]);
-        setShowBtn(page < Math.ceil(totalHits / 12));
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleSubmit = query => {
     setPage(1);
